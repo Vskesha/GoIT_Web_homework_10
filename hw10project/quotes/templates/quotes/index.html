@@ -1,0 +1,43 @@
+{% extends 'quotes/base.html' %}
+
+{% block content %}
+
+{% for quote in quotes %}
+<div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <span class="text" itemprop="text">
+                {{quote.quote}}
+            </span>
+  <span>by <small class="author" itemprop="author">{{ quote.author.fullname }}</small>
+        <a href="{% url 'quotes:author_detail' quote.author.id %}">(about)</a>
+        </span>
+  <div class="tags">
+    Tags:
+    {% for tag in quote.tags.iterator %}
+    <a class="tag" href="{% url 'quotes:tag_detail' tag.id %}">{{ tag }}</a>
+    {% endfor %}
+  </div>
+</div>
+
+{% endfor %}
+
+<nav>
+  <ul class="pager">
+    {% if quotes.has_previous %}
+    <li class="previous">
+      <a class="{% if not quotes.has_previous %} disabled {% endif %}"
+         href="{% url 'quotes:root_paginate' quotes.previous_page_number %}">
+        <span aria-hidden="true">←</span> Previous
+      </a>
+    </li>
+    {% endif %}
+    {% if quotes.has_next %}
+    <li class="next">
+      <a class="{% if not quotes.has_next %} disabled {% endif %}"
+         href="{% url 'quotes:root_paginate' quotes.next_page_number %}">
+        Next <span aria-hidden="true">→</span></a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}

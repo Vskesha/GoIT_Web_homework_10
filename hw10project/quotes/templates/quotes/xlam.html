@@ -1,0 +1,64 @@
+{% extends 'quotes/base.html' %}
+{% load extract %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        {% for quote in quotes %}
+        <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <span class="text" itemprop="text">{{quote.quote}}</span>
+            <span>by <small class="author" itemprop="author">{{quote.author.id|author}}</small>
+            <a class="about" href="{% url 'quotes:author_detail' quote.author.id %}">(about)</a>
+            </span>
+            <div class="tags">
+                Tags:
+                {% for tag in quote.tags.all %}
+                <a class="tag" href="{% url 'quotes:tag_detail' tag.id %}">{{tag.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <nav>
+            <ul class="pager">
+                <li class="previous">
+                    <a class="{% if not quotes.has_previous %} disabled {% endif %}"
+                       href="{% if quotes.has_previous %} {% url 'quotes:root_paginate' quotes.previous_page_number %} {% else %} # {% endif %}">
+                        <span aria-hidden="true">←</span> Previous
+                    </a>
+                </li>
+                <li class="next">
+                    <a class="{% if not quotes.has_next %} disabled {% endif %}"
+                       href="{% if quotes.has_next %} {% url 'quotes:root_paginate' quotes.next_page_number %} {% else %} # {% endif %}">Next
+                        <span aria-hidden="true">→</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-4 tags-box">
+        <h2>Top Ten tags</h2>
+        {% for tag in tags %}
+        <a class="tag_10" href="{% url 'quotes:tag_detail' tag.id %}"
+           style="font-size: {{ forloop.counter|calculate_font_size }}px;">{{ tag.name }}</a>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}
+
+<a href="/" class="back-button">← TO MAIN</a>
+  <div class="deleted">
+      <h1 class="text-center">{% if messages %}{{ messages.0 }}{% endif %}</h1>
+  </div>
+
+body {
+    background: url(./picture/picture1.png) center;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}

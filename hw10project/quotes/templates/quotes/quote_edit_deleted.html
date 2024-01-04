@@ -1,0 +1,16 @@
+{% extends 'quotes/base.html' %}
+
+
+{% block content %}
+
+<div class="deleted">
+ {% if messages %}
+    {% for message in messages %}
+<div {% if message.tags %} class="text-center" {% endif %} role="alert">
+    {{message}}
+</div>
+    {% endfor %}
+{% endif%}
+</div>
+
+{% endblock %}

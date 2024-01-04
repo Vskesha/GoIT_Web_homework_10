@@ -1,0 +1,22 @@
+{% extends 'quotes/base.html' %}
+
+{% block content %}
+
+<h4> Quote author: {{quote.author}}</h4>
+<div class="quote_selected" itemscope="" itemtype="http://schema.org/CreativeWork">
+    <span class="text" itemprop="text">{{quote.quote}}</span>
+    <span>by <small class="author" itemprop="author">{{ quote.author.fullname }}</small>
+            <a class="about" href="{% url 'quotes:author_detail' quote.author.id %}">(about)</a>
+        </span>
+    <div class="tags">
+        Tags:
+        {% for tag in quote.tags.all %}
+        <a class="tag" href="{% url 'quotes:tag_detail' tag.id %}">{{tag.name}}</a>
+        {% endfor %}
+    </div>
+</div>
+<div class="buttons_e_d">
+    <a class="btn btn-primary" href="{% url 'quotes:edit_quote' quote.id %}">Edit</a>
+    <a class="btn btn-danger" href="{% url 'quotes:delete_quote' quote.id %}">Delete</a>
+</div>
+{% endblock %}
